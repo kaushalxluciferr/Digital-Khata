@@ -76,8 +76,10 @@ return res.json({
 
 const addCustomer=async(req,res)=>{
     try{
-       const {shopkeeperId,username}=req.body
-
+       const {token,username}=req.body
+        const decoded=jwt.verify(token,process.env.SECRET_KEY)
+        const shopkeeperId=decoded.id
+        
        const exuser=await Customer.findOne({username})
 
        if(exuser){
@@ -209,14 +211,17 @@ return res.json({
 
 const getcustomer=async(req,res)=>{
     try{
-        const {shopkeeperId}=req.body
+        const {token}=req.body
+        
 
-        if(!shopkeeperId){
+        if(!token){
             return res.json({
                 success:false,
-                message:"no shopkeper id found"
+                message:"no token found"
             })
         }
+        const decoded=jwt.verify(token,process.env.SECRET_KEY)
+        const shopkeeperId=decoded.id
         const customers=await Customer.find({shopkeeperId})
          
          return res.json({success:true,

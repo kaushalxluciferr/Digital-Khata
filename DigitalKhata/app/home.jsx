@@ -5,24 +5,23 @@ import axios from 'axios';
 import { AppContext } from '../context/Appcontext';
 
 const Home = () => {
-  const { token } = useContext(AppContext);
-  const router = useRouter();
+  const { token } = useContext(AppContext)
+  const router = useRouter()
   
-  const [searchQuery, setSearchQuery] = useState('');
-  const [customers, setCustomers] = useState([]);
-  const [filteredCustomers, setFilteredCustomers] = useState([]);
-  const [viewMode, setViewMode] = useState('search'); // 'search', 'edit', 'add'
-  const [editingCustomer, setEditingCustomer] = useState(null);
-  const [newCustomerName, setNewCustomerName] = useState('');
+  const [searchQuery, setSearchQuery] = useState('')
+  const [customers, setCustomers] = useState([])
+  const [filteredCustomers, setFilteredCustomers] = useState([])
+  const [viewMode, setViewMode] = useState('search')
+  const [editingCustomer, setEditingCustomer] = useState(null)
+  const [newCustomerName, setNewCustomerName] = useState('')
 
   // Fetch customers from API
   const fetchCustomers = async () => {
     try {
       const { data } = await axios.post(
         "https://digital-khata-snowy.vercel.app/api/shop/getcustomer",
-        { shopkeeperId: getShopkeeperIdFromToken() }, // You'll need to implement this
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+        {token}
+      )
       if (data.success) {
         setCustomers(data.customers);
         setFilteredCustomers(data.customers);
@@ -33,12 +32,6 @@ const Home = () => {
     }
   };
 
-  // Get shopkeeper ID from token (you'll need to implement JWT decoding)
-  const getShopkeeperIdFromToken = () => {
-    // This is a placeholder - you'll need to decode the JWT token
-    // to get the shopkeeper ID
-    return "shopkeeper_id_here";
-  };
 
   useEffect(() => {
     fetchCustomers();
@@ -111,10 +104,9 @@ const Home = () => {
       const { data } = await axios.post(
         "https://digital-khata-snowy.vercel.app/api/shop/addcustomer",
         {
-          shopkeeperId: getShopkeeperIdFromToken(),
+          token,
           username: newCustomerName
-        },
-        { headers: { Authorization: `Bearer ${token}` } }
+        }
       );
 
       if (data.success) {
