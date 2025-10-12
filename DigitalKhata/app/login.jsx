@@ -25,7 +25,6 @@ const Login = () => {
   return (
     <View style={styles.container}>
       <View style={styles.innerContainer}>
-        {/* Header Section */}
         <View style={styles.header}>
           <Text style={styles.title}>Login Page</Text>
           <Image
@@ -34,7 +33,6 @@ const Login = () => {
           />
         </View>
 
-        {/* Input Section */}
         <View style={styles.inputSection}>
           <View>
             <Text style={styles.label}>Enter Your Email Address</Text>
@@ -59,12 +57,10 @@ const Login = () => {
           </View>
         </View>
 
-        {/* Login Button */}
         <TouchableOpacity style={styles.button} onPress={handleLogin} activeOpacity={0.8}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
 
-        {/* Footer */}
         <View style={styles.footer}>
           <Text style={styles.footerText}>
             Don’t have an account? <Text style={styles.signupText} onPress={handlesignin}>Sign Up</Text>

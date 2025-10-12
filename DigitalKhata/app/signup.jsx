@@ -2,6 +2,7 @@ import { Image, StyleSheet, Text, TextInput, View, TouchableOpacity, Alert } fro
 import React, { useState } from 'react';
 import { hp, wp } from '../helper/responsive';
 import { useRouter } from 'expo-router';
+import axios from 'axios';
 
 const Signup = () => {
   const router = useRouter();
@@ -10,7 +11,7 @@ const Signup = () => {
   const [cnfpass,setcnfpass]=useState('')
 
 
-  const handleSignup = () => {
+  const handleSignup = async() => {
     if(pass.length<8){
         Alert.alert("password should be 8 lettter")
         return ;
@@ -19,6 +20,16 @@ const Signup = () => {
         Alert.alert("Password not matched")
         return ;
     }
+   try{
+ const {data}=await axios.post("http://192.168.1.10:3000/api/shop/signup",{email,Password:pass})
+    if(data.success){
+      Alert.alert("success")
+    }else{
+      Alert.alert(data.message)
+    }
+   }catch(error){
+    console.log(error);
+   }
   }
 
   const handleLoginRedirect = () => {
