@@ -6,20 +6,32 @@ import axios from 'axios';
 import { AppContext } from '../context/Appcontext';
 
 const Login = () => {
-    const {token,settoken}=useContext(AppContext)
-    const router=useRouter()
-    const[email,setemail]=useState('')
-    const [pass,setpass]=useState("")
+  const { token, settoken } = useContext(AppContext)
+  const router = useRouter()
+  const [email, setemail] = useState('')
+  const [pass, setpass] = useState("")
 
-    const handlesignin=()=>{
-        router.push('/signup')
+  const handlesignin = () => {
+    router.push('/signup')
+  }
+
+  const handleLogin = async () => {
+    if (!email || !pass) {
+      Alert.alert("Some field is missing")
+      return;
     }
-    
-  const handleLogin =async () => {
-    if(!email ||!pass){
-            Alert.alert("Some field is missing")
-            return ;
-        } 
+    try {
+      const { data } = await axios.post("https://digital-khata-snowy.vercel.app/api/shop/signin", { email, password: pass })
+      if (data.success) {
+        const token = data.token
+        await AsyncStorage.setItem("token", token)
+        settoken(token)
+        Alert.alert("Signup Successfull", "Welcome on Digital Khata")
+        router.replace('/home')
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (

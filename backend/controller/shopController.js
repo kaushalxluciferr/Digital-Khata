@@ -184,6 +184,29 @@ return res.json({
 }
 
 
+const getcustomer=async(req,res)=>{
+    try{
+        const {shopkeeperId}=req.body
+
+        if(!shopkeeperId){
+            return res.json({
+                success:false,
+                message:"no shopkeper id found"
+            })
+        }
+        const customers=await Customer.find({shopkeeperId})
+         
+         return res.json({success:true,
+            customers
+         })
+    }catch(error){
+        return res.json({
+            success:false,
+            message:error.message
+        })
+    }
+}
 
 
-export {signin,signup,addCustomer,addOrUpdateItems,deleteitem}
+
+export {signin,signup,addCustomer,addOrUpdateItems,deleteitem,getcustomer}

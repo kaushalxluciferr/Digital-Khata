@@ -3,34 +3,44 @@ import React, { useState } from 'react';
 import { hp, wp } from '../helper/responsive';
 import { useRouter } from 'expo-router';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useContext } from 'react';
+import { AppContext } from '../context/Appcontext';
 
 const Signup = () => {
   const router = useRouter();
-  const [email,setemail]=useState('')
-  const [pass,setpass]=useState('')
-  const [cnfpass,setcnfpass]=useState('')
+  const [email, setemail] = useState('')
+  const [pass, setpass] = useState('')
+  const [cnfpass, setcnfpass] = useState('')
+  const { settoken, token } = useContext(AppContext)
 
 
-  const handleSignup = async() => {
-    if(pass.length<8){
-        Alert.alert("password should be 8 lettter")
-        return ;
+  const handleSignup = async () => {
+    if (pass.length < 8) {
+      Alert.alert("password should be 8 lettter")
+      return;
     }
-    if(pass!==cnfpass){
-        Alert.alert("Password not matched")
-        return ;
+    if (pass !== cnfpass) {
+      Alert.alert("Password not matched")
+      return;
     }
-   try{
- const {data}=await axios.post("http://192.168.1.10:3000/api/shop/signup",{email,Password:pass})
-    if(data.success){
-      Alert.alert("success")
-    }else{
-      Alert.alert(data.message)
+    try {
+      const { data } = await axios.post("https://digital-khata-snowy.vercel.app/api/shop/signup", { email, password: pass })
+      if (data.success) {
+        const token = data.token
+        await AsyncStorage.setItem("token", token)
+        settoken(token)
+        Alert.alert("Signup Successfull", "Welcome on Digital Khata")
+        router.replace('/home')
+      }
+    } catch (error) {
+      console.log(error);
+
     }
-   }catch(error){
-    console.log(error);
-   }
+
   }
+
+  console.log(token);
 
   const handleLoginRedirect = () => {
     router.push('/login');
@@ -71,7 +81,7 @@ const Signup = () => {
               placeholderTextColor="#999"
             />
           </View>
-            <View>
+          <View>
             <Text style={styles.label}>Confirm Your Password</Text>
             <TextInput
               placeholder="Enter your password here"

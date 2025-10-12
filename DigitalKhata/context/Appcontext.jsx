@@ -20,7 +20,7 @@ const AppContextProvider = ({ children }) => {
 
 
     const value = {
-    token
+    token,settoken
     }
 
 

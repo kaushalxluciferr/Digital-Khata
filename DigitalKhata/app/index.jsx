@@ -13,7 +13,7 @@ const router=useRouter()
 
 const handleClick=()=>{
 if(token){
-  router.replace('/(tabs)/')
+  router.replace('/home')
 }else{
   router.push('/login')
 }
