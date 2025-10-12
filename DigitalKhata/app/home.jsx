@@ -2,6 +2,8 @@ import { Image, StyleSheet, Text, TouchableOpacity, View, ScrollView } from 'rea
 import React from 'react';
 
 const Home = () => {
+
+  
   return (
     <View style={styles.container}>
       {/* Scrollable Content */}

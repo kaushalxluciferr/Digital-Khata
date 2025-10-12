@@ -207,6 +207,36 @@ const getcustomer=async(req,res)=>{
     }
 }
 
+const updatecustomername=async(req,res)=>{
+    try{
+        const {_id,username}=req.body
+        const exuser=await Customer.findOne({username})
+        if(exuser){
+            return res.json({
+                success:false,
+                message:"username exist"
+            })
+        }
+        const user=await Customer.findByIdAndUpdate(_id,{username})
+        
+    if (!user) {
+      return res.json({
+        success: false,
+        message: "Customer not found",
+      })
+    }
+        return res.json({
+            success:true,
+            message:"Updated Successfull"
+        })
+    }catch(error){
+        return res.json({
+            success:false,
+            message:error.message
+        })
+    }
+}
+
 
 
 export {signin,signup,addCustomer,addOrUpdateItems,deleteitem,getcustomer}
