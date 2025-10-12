@@ -102,6 +102,29 @@ const addCustomer=async(req,res)=>{
         }
 }
 
+const deletecustomer=async(req,res)=>{
+    try{
+const {_id}=req.body
+if(!_id){
+    return res.json({
+        success:false,
+        message:"No customer with this id "
+    })
+}
+
+const user =await Customer.findByIdAndDelete(_id)
+
+return res.json({success:true,
+    message:"Deleted Successfull"
+})
+
+    }catch(error){
+        return res.json({
+            success:false,
+            message:error.message
+        })
+    }
+}
 
 const addOrUpdateItems = async (req, res) => {
   try {
@@ -238,5 +261,30 @@ const updatecustomername=async(req,res)=>{
 }
 
 
+const getitemofcustomer=async(req,res)=>{
+    try{
+        const {customerId}=req.body
+        if(!customerId){
+            return res.json({
+                success:false,
+                message:"customer id is not found"
+            })
+        }
+        const items =await Item.find({customerId})
+         
+        return res.json({
+            success:true,
+            items
+        })
 
-export {signin,signup,addCustomer,addOrUpdateItems,deleteitem,getcustomer}
+    }catch(error){
+        return res.json({
+            success:false,
+            message:error.message
+        })
+    }
+}
+
+
+
+export {signin,signup,addCustomer,addOrUpdateItems,deleteitem,getcustomer,updatecustomername,getitemofcustomer,deletecustomer}
