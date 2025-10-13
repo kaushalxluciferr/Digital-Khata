@@ -3,9 +3,10 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useRouter } from 'expo-router';
 import axios from 'axios';
 import { AppContext } from '../context/Appcontext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Home = () => {
-  const { token } = useContext(AppContext)
+  const { token, settoken } = useContext(AppContext)
   const router = useRouter()
   
   const [searchQuery, setSearchQuery] = useState('')
@@ -32,6 +33,34 @@ const Home = () => {
     }
   };
 
+  // Logout function
+  const handleLogout = async () => {
+    Alert.alert(
+      "Logout",
+      "Are you sure you want to logout?",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Logout",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              // Clear token from AsyncStorage
+              await AsyncStorage.removeItem("token");
+              // Clear token from context
+              settoken(null);
+              // Navigate to login screen
+              router.replace('/login');
+              Alert.alert("Success", "Logged out successfully");
+            } catch (error) {
+              console.log(error);
+              Alert.alert("Error", "Failed to logout");
+            }
+          }
+        }
+      ]
+    );
+  };
 
   useEffect(() => {
     fetchCustomers();
@@ -228,6 +257,14 @@ const Home = () => {
 
   return (
     <View style={styles.container}>
+      {/* Header with Logout Button */}
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Digital Khata</Text>
+        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+          <Text style={styles.logoutButtonText}>Logout</Text>
+        </TouchableOpacity>
+      </View>
+
       {/* Scrollable Content */}
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.content}>
@@ -300,6 +337,37 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  logoutButton: {
+    backgroundColor: '#FF3B30',
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    borderRadius: 6,
+  },
+  logoutButtonText: {
+    color: '#fff',
+    fontWeight: '600',
+    fontSize: 14,
   },
   scrollContent: {
     flexGrow: 1,

@@ -80,7 +80,7 @@ const addCustomer=async(req,res)=>{
         const decoded=jwt.verify(token,process.env.SECRET_KEY)
         const shopkeeperId=decoded.id
         
-       const exuser=await Customer.findOne({username})
+       const exuser=await Customer.findOne({shopkeeperId,username})
 
        if(exuser){
         return res.json({
