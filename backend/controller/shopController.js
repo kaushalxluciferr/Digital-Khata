@@ -237,8 +237,10 @@ const getcustomer=async(req,res)=>{
 
 const updatecustomername=async(req,res)=>{
     try{
-        const {_id,username}=req.body
-        const exuser=await Customer.findOne({username})
+        const {_id,username,token}=req.body
+         const decoded=jwt.verify(token,process.env.SECRET_KEY)
+        const shopkeeperId=decoded.id
+        const exuser=await Customer.findOne({username,shopkeeperId})
         if(exuser){
             return res.json({
                 success:false,

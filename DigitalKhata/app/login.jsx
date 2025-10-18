@@ -29,6 +29,8 @@ const Login = () => {
         settoken(token)
         Alert.alert("Signup Successfull", "Welcome on Digital Khata")
         router.replace('/home')
+      }else{
+        Alert.alert("Login Failed",data.message)
       }
     } catch (error) {
       console.log(error)

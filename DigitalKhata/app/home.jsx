@@ -16,7 +16,7 @@ const Home = () => {
   const [editingCustomer, setEditingCustomer] = useState(null)
   const [newCustomerName, setNewCustomerName] = useState('')
 
-  // Fetch customers from API
+  
   const fetchCustomers = async () => {
     try {
       const { data } = await axios.post(
